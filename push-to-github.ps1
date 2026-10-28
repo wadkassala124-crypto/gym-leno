@@ -1,64 +1,49 @@
-# ========================================================
-# Gym & Leno - Quick GitHub & Vercel Connect Script
-# ========================================================
-
-Write-Host "========================================================" -ForegroundColor Cyan
-Write-Host "   GYM & LENO - ربط الموقع بـ GitHub و Vercel التلقائي" -ForegroundColor Green
+﻿Write-Host "========================================================" -ForegroundColor Cyan
+Write-Host "   GYM and LENO - Push to GitHub (wadkassala124-crypto)" -ForegroundColor Green
 Write-Host "========================================================" -ForegroundColor Cyan
 Write-Host ""
 
-# Locate git executable
-$gitCmd = "git"
-if (-not (Get-Command git -ErrorAction SilentlyContinue)) {
-    if (Test-Path "$env:LOCALAPPDATA\Programs\Git\cmd\git.exe") {
-        $gitCmd = "$env:LOCALAPPDATA\Programs\Git\cmd\git.exe"
-    } elseif (Test-Path "C:\Program Files\Git\cmd\git.exe") {
-        $gitCmd = "C:\Program Files\Git\cmd\git.exe"
+$gitCmd = "$env:LOCALAPPDATA\Programs\Git\cmd\git.exe"
+if (-not (Test-Path $gitCmd)) {
+    if (Get-Command git -ErrorAction SilentlyContinue) {
+        $gitCmd = "git"
     } else {
-        Write-Host "[!] تنبيه: Git غير مثبت على جهازك حالياً." -ForegroundColor Yellow
-        exit
+        Write-Host "[!] Git is not installed." -ForegroundColor Red
+        exit 1
     }
 }
 
-# Check if origin is already configured
-$existingRemote = & $gitCmd remote get-url origin 2>$null
+$repoPath = "C:\Users\anwar\.gemini\antigravity\scratch\gym-leno"
+Set-Location -Path $repoPath
 
-if ([string]::IsNullOrWhiteSpace($existingRemote)) {
-    $repoUrl = Read-Host "أدخل رابط مستودع GitHub الخاص بك (مثال: https://github.com/yassinanwar140-source/gem.git)"
-    if ([string]::IsNullOrWhiteSpace($repoUrl)) {
-        Write-Host "[X] لم يتم إدخال رابط المستودع. تم إلغاء العملية." -ForegroundColor Red
-        exit
-    }
-    & $gitCmd remote add origin $repoUrl.Trim()
-} else {
-    Write-Host "[✓] المستودع المرتبط حالياً: $existingRemote" -ForegroundColor Green
-}
+Write-Host "[1/3] Configuring account: wadkassala124-crypto (wadkassala124@gmail.com)..." -ForegroundColor Cyan
+& $gitCmd config user.email "wadkassala124@gmail.com"
+& $gitCmd config user.name "wadkassala124-crypto"
+& $gitCmd remote set-url origin https://github.com/wadkassala124-crypto/78.git
 
-# Initialize git if needed
-if (-not (Test-Path ".git")) {
-    Write-Host "[1/4] جاري تهيئة مستودع Git محلياً..." -ForegroundColor Cyan
-    & $gitCmd init
-}
-
-Write-Host "[2/4] جاري تجهيز جميع ملفات المشروع وإصلاحات الأمان..." -ForegroundColor Cyan
-& $gitCmd add .
-& $gitCmd commit -m "feat: complete Gym & Leno production system with cybersecurity patches and responsive design" 2>$null
-
-Write-Host "[3/4] ضبط الفرع الرئيسي (main)..." -ForegroundColor Cyan
+Write-Host "[2/3] Setting branch to main..." -ForegroundColor Cyan
 & $gitCmd branch -M main
 
-Write-Host "[4/4] جاري رفع الأكواد إلى GitHub (سيفتح المتصفح للموافقة لمرة واحدة إذا طُلب)..." -ForegroundColor Cyan
+Write-Host "[3/3] Pushing to GitHub (https://github.com/wadkassala124-crypto/78)..." -ForegroundColor Yellow
+Write-Host "If your browser opens, sign in with wadkassala124@gmail.com and click Authorize." -ForegroundColor Yellow
+Write-Host ""
+
 & $gitCmd push -u origin main
 
 Write-Host ""
-Write-Host "========================================================" -ForegroundColor Green
-Write-Host " [✓] تم رفع موقع GYM & LENO إلى GitHub بنجاح! 🎉" -ForegroundColor Green
-Write-Host "========================================================" -ForegroundColor Green
-Write-Host ""
-Write-Host "الخطوات التالية للربط مع Vercel الجديد:" -ForegroundColor Yellow
-Write-Host "1. افتح الرابط: https://vercel.com/signup وسجل بالضغط على 'Continue with GitHub'" -ForegroundColor White
-Write-Host "2. اختر مستودع '78' واضغط على زر 'Import'." -ForegroundColor White
-Write-Host "3. في خانة Environment Variables ضع بيانات الأدمن: ADMIN_USER و ADMIN_PASSWORD" -ForegroundColor White
-Write-Host "4. اضغط 'Deploy' ومبروك عليك انطلاق الموقع الحي!" -ForegroundColor Cyan
-Write-Host "3. من الآن فصاعداً، أي تعديل ترفعه بـ 'git push' سيُنشر مباشرة على الموقع الحي تلقائياً!" -ForegroundColor Cyan
+if ($LASTEXITCODE -eq 0) {
+    Write-Host "========================================================" -ForegroundColor Green
+    Write-Host " [SUCCESS] Pushed to repository '78' successfully! 🎉" -ForegroundColor Green
+    Write-Host "========================================================" -ForegroundColor Green
+    Write-Host ""
+    Write-Host "Next Step on Vercel:" -ForegroundColor Cyan
+    Write-Host "1. Open: https://vercel.com/signup and click 'Continue with GitHub'" -ForegroundColor White
+    Write-Host "2. Click 'Import' next to the '78' repository." -ForegroundColor White
+    Write-Host "3. In Environment Variables add:" -ForegroundColor White
+    Write-Host "   ADMIN_USER = yassin" -ForegroundColor White
+    Write-Host "   ADMIN_PASSWORD = YassinAnwar123" -ForegroundColor White
+    Write-Host "4. Click Deploy!" -ForegroundColor White
+} else {
+    Write-Host "[!] Push was not completed. Please check your credentials." -ForegroundColor Red
+}
 Write-Host ""
