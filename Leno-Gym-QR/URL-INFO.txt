@@ -1,0 +1,19 @@
+=====================================================
+GYM & LENO | لينو جيم - PERMANENT QR CODE CONFIGURATION
+=====================================================
+
+Target URL: https://gym-leno.vercel.app
+Type: Static Direct HTTPS URL (No intermediary redirects or expiration)
+Target Destination: Public Home Page (Direct visitor entry)
+Generated Date: 2026-10-25T18:07:39.118Z
+
+Included Files in this folder (Leno-Gym-QR):
+1. leno-gym-qr-print.svg   - Vector format for banners & print (High Contrast B&W)
+2. leno-gym-qr-luxury.svg  - Styled Luxury Vector with Gym & Leno branding (Neon Lime & Dark Obsidian)
+3. leno-gym-qr-print.png   - High-Res raster image for direct printing & social media
+4. leno-gym-qr-luxury.png  - High-Res branded raster image for digital posts & marketing
+5. URL-INFO.txt            - Direct verification link
+
+Permanent Access Guarantee:
+- The QR Code directly embeds the HTTPS destination without third-party redirects.
+- Scanning will always lead to Gym & Leno as long as the domain/hosting is active.
