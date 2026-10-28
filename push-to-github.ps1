@@ -7,43 +7,48 @@ Write-Host "   GYM & LENO - ربط الموقع بـ GitHub و Vercel التلق
 Write-Host "========================================================" -ForegroundColor Cyan
 Write-Host ""
 
-# Check if git command exists
+# Locate git executable
+$gitCmd = "git"
 if (-not (Get-Command git -ErrorAction SilentlyContinue)) {
-    Write-Host "[!] تنبيه: Git غير مثبت على جهازك حالياً." -ForegroundColor Yellow
-    Write-Host "[*] جاري محاولة تثبيت Git تلقائياً عبر Windows Package Manager..." -ForegroundColor Cyan
-    winget install --id Git.Git -e --source winget --accept-source-agreements --accept-package-agreements
-    Write-Host "[✓] يرجى إعادة فتح نافذة PowerShell بعد انتهاء التثبيت وتشغيل هذا الملف مجدداً." -ForegroundColor Green
-    exit
+    if (Test-Path "$env:LOCALAPPDATA\Programs\Git\cmd\git.exe") {
+        $gitCmd = "$env:LOCALAPPDATA\Programs\Git\cmd\git.exe"
+    } elseif (Test-Path "C:\Program Files\Git\cmd\git.exe") {
+        $gitCmd = "C:\Program Files\Git\cmd\git.exe"
+    } else {
+        Write-Host "[!] تنبيه: Git غير مثبت على جهازك حالياً." -ForegroundColor Yellow
+        exit
+    }
 }
 
-# Ask for repository URL if not provided
-$repoUrl = Read-Host "أدخل رابط مستودع GitHub الخاص بك (مثال: https://github.com/USERNAME/gym-leno.git)"
+# Check if origin is already configured
+$existingRemote = & $gitCmd remote get-url origin 2>$null
 
-if ([string]::IsNullOrWhiteSpace($repoUrl)) {
-    Write-Host "[X] لم يتم إدخال رابط المستودع. تم إلغاء العملية." -ForegroundColor Red
-    exit
+if ([string]::IsNullOrWhiteSpace($existingRemote)) {
+    $repoUrl = Read-Host "أدخل رابط مستودع GitHub الخاص بك (مثال: https://github.com/yassinanwar140-source/gem.git)"
+    if ([string]::IsNullOrWhiteSpace($repoUrl)) {
+        Write-Host "[X] لم يتم إدخال رابط المستودع. تم إلغاء العملية." -ForegroundColor Red
+        exit
+    }
+    & $gitCmd remote add origin $repoUrl.Trim()
+} else {
+    Write-Host "[✓] المستودع المرتبط حالياً: $existingRemote" -ForegroundColor Green
 }
 
 # Initialize git if needed
 if (-not (Test-Path ".git")) {
-    Write-Host "[1/5] جاري تهيئة مستودع Git محلياً..." -ForegroundColor Cyan
-    git init
+    Write-Host "[1/4] جاري تهيئة مستودع Git محلياً..." -ForegroundColor Cyan
+    & $gitCmd init
 }
 
-Write-Host "[2/5] جاري إضافة وتجهيز جميع ملفات المشروع..." -ForegroundColor Cyan
-git add .
+Write-Host "[2/4] جاري تجهيز جميع ملفات المشروع وإصلاحات الأمان..." -ForegroundColor Cyan
+& $gitCmd add .
+& $gitCmd commit -m "feat: complete Gym & Leno production system with cybersecurity patches and responsive design" 2>$null
 
-Write-Host "[3/5] جاري حفظ الإصدار (Commit)..." -ForegroundColor Cyan
-git commit -m "feat: complete Gym & Leno production system with cybersecurity patches"
+Write-Host "[3/4] ضبط الفرع الرئيسي (main)..." -ForegroundColor Cyan
+& $gitCmd branch -M main
 
-Write-Host "[4/5] جاري ضبط الفرع الرئيسي (main)..." -ForegroundColor Cyan
-git branch -M main
-
-Write-Host "[5/5] جاري الربط بالمستودع ورفع الأكواد إلى GitHub..." -ForegroundColor Cyan
-git remote remove origin -ErrorAction SilentlyContinue
-git remote add origin $repoUrl.Trim()
-
-git push -u origin main
+Write-Host "[4/4] جاري رفع الأكواد إلى GitHub (سيفتح المتصفح للموافقة لمرة واحدة إذا طُلب)..." -ForegroundColor Cyan
+& $gitCmd push -u origin main
 
 Write-Host ""
 Write-Host "========================================================" -ForegroundColor Green
