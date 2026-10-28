@@ -55,8 +55,10 @@ Write-Host "========================================================" -Foregroun
 Write-Host " [✓] تم رفع موقع GYM & LENO إلى GitHub بنجاح! 🎉" -ForegroundColor Green
 Write-Host "========================================================" -ForegroundColor Green
 Write-Host ""
-Write-Host "الخطوة الأخيرة للربط مع Vercel:" -ForegroundColor Yellow
-Write-Host "1. افتح الرابط: https://vercel.com/yassinanwar140-6807/gym-leno/settings/git" -ForegroundColor White
-Write-Host "2. اضغط على زر 'Connect to Git' واختر مستودعك من القائمة." -ForegroundColor White
+Write-Host "الخطوات التالية للربط مع Vercel الجديد:" -ForegroundColor Yellow
+Write-Host "1. افتح الرابط: https://vercel.com/signup وسجل بالضغط على 'Continue with GitHub'" -ForegroundColor White
+Write-Host "2. اختر مستودع '78' واضغط على زر 'Import'." -ForegroundColor White
+Write-Host "3. في خانة Environment Variables ضع بيانات الأدمن: ADMIN_USER و ADMIN_PASSWORD" -ForegroundColor White
+Write-Host "4. اضغط 'Deploy' ومبروك عليك انطلاق الموقع الحي!" -ForegroundColor Cyan
 Write-Host "3. من الآن فصاعداً، أي تعديل ترفعه بـ 'git push' سيُنشر مباشرة على الموقع الحي تلقائياً!" -ForegroundColor Cyan
 Write-Host ""
